@@ -1,0 +1,65 @@
+[2025-05-28 15:59:45] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-05-28 15:59:51] Command cancel input_dir
+[2025-05-28 15:59:59] Command shutdown
+[2025-05-30 12:37:48] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-05-30 12:38:10] Command cancel input_dir
+[2025-05-30 12:38:35] Command shutdown
+[2025-05-30 12:41:20] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-05-30 12:41:23] Command cancel input_dir
+[2025-05-30 12:41:25] Command shutdown
+[2025-05-30 12:50:52] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-05-30 12:50:54] Command cancel input_dir
+[2025-05-30 12:50:56] Command shutdown
+[2025-05-30 12:56:36] Command shutdown
+[2025-05-30 12:56:36] shutting down manager...
+[2025-05-30 12:56:58] Command shutdown
+[2025-05-30 12:56:58] shutting down manager...
+[2025-05-30 13:00:45] Command shutdown
+[2025-05-30 13:00:45] shutting down manager...
+[2025-05-30 13:00:45] waiting for all active workers to finish.
+[2025-05-30 13:00:45] processing remaining queued tasks.
+[2025-05-30 13:26:30] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-05-30 13:26:32] Command cancel input_dir
+[2025-05-30 13:26:34] Command shutdown
+[2025-05-30 13:27:30] Command shutdown
+[2025-05-30 13:27:30] shutting down manager...
+[2025-05-30 13:27:30] waiting for all active workers to finish.
+[2025-05-30 13:27:30] processing remaining queued tasks.
+[2025-05-30 13:33:00] Command shutdown
+[2025-05-30 13:33:00] shutting down manager...
+[2025-06-04 10:27:48] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-06-04 10:27:51] Command cancel input_dir
+[2025-06-04 10:27:52] Command shutdown
+[2025-06-04 10:28:46] Command shutdown
+[2025-06-04 10:28:46] shutting down manager...
+[2025-06-04 10:29:00] Command shutdown
+[2025-06-04 10:29:00] shutting down manager...
+[2025-06-04 10:29:20] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-06-04 10:29:22] Command cancel input_dir
+[2025-06-04 10:29:24] Command shutdown
+[2025-06-04 10:39:25] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-06-04 10:39:27] Command cancel input_dir
+[2025-06-04 10:39:30] Command shutdown
+[2025-06-04 10:41:18] Command shutdown
+[2025-06-04 10:41:18] shutting down manager...
+[2025-06-04 10:50:33] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-06-04 10:50:35] Command cancel input_dir
+[2025-06-04 10:50:35] synchronization stopped for input_dir
+[2025-06-04 10:51:03] Command shutdown
+[2025-06-04 10:51:03] shutting down manager...
+[2025-06-04 10:51:03] waiting for all active workers to finish.
+[2025-06-04 10:51:03] processing remaining queued tasks.
+[2025-06-04 10:54:09] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-06-04 10:54:11] Command cancel input_dir
+[2025-06-04 10:54:11] synchronization stopped for input_dir
+[2025-06-04 10:54:15] Command shutdown
+[2025-06-04 10:54:15] shutting down manager...
+[2025-06-04 10:54:15] waiting for all active workers to finish.
+[2025-06-04 10:54:15] processing remaining queued tasks.
+[2025-06-04 10:59:34] Command add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-06-04 10:59:37] Command cancel input_dir
+[2025-06-04 10:59:37] synchronization stopped for input_dir
+[2025-06-04 10:59:40] Command shutdown
+[2025-06-04 10:59:40] shutting down manager...
+[2025-06-04 10:59:40] waiting for all active workers to finish.
+[2025-06-04 10:59:40] processing remaining queued tasks.

@@ -1,0 +1,8 @@
+[2025-06-04 10:59:16] LIST connection failed to 127.0.0.1:5000 — Connection refused
+[2025-06-04 10:59:16] Manager ready to accept console connections.
+[2025-06-04 10:59:34] Received command: add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
+[2025-06-04 10:59:37] Received command: cancel input_dir
+[2025-06-04 10:59:37] synchronization stopped for input_dir
+[2025-06-04 10:59:40] Received command: shutdown
+[2025-06-04 10:59:40] shutting down manager...
+[2025-06-04 10:59:40] manager shutdown complete.
