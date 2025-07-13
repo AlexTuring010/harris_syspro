@@ -17,6 +17,7 @@
 #include <signal.h> //για το sigchld_handler
 #include <dirent.h>// για το readdir
 #include <stdarg.h>  //για va_list, va_start, va_end
+#include <ctype.h>   //για isprint
 #define BUFSIZE 4096 //μεγιστο μηκος buffer
 #define MAX_LINE 1024 //μεγιστο μηκος γραμμης
 #define FIFO_IN "fss_in" // επικοινωνια με το worker

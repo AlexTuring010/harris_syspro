@@ -1,0 +1,40 @@
+[2025-07-13 04:44:18] Added file: test_source1/file1.txt@127.0.0.1:5002 -> test_target1/file1.txt@127.0.0.1:5003
+[2025-07-13 04:44:18] Added file: test_source1/file2.txt@127.0.0.1:5002 -> test_target1/file2.txt@127.0.0.1:5003
+[2025-07-13 04:44:18] Added file: test_source1/file3.txt@127.0.0.1:5002 -> test_target1/file3.txt@127.0.0.1:5003
+[2025-07-13 04:44:19] Manager ready to accept console connections.
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file1.txt] PULL response: filesize=12
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file1.txt] Sent PUSH init: PUSH test_target1/file1.txt -1 dummy
+
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file1.txt] Starting data transfer from PULL socket
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file1.txt] PULL chunk 1: 12 bytes (total: 12) data: "1o file test"
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file1.txt] PUSH chunk 1: sent 12/12 bytes data: "1o file test"
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file1.txt] PULL socket closed normally (EOF)
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file1.txt] Sent PUSH finalize: PUSH test_target1/file1.txt 0 end
+
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file1.txt] Transfer complete: 1 chunks, 12 total bytes
+[2025-07-13 04:44:19] [test_source1/file1.txt@127.0.0.1:5002] [test_target1/file1.txt@127.0.0.1:5003] [140050324588224] [PULL] [SUCCESS] [12 bytes pulled]
+[2025-07-13 04:44:19] [test_source1/file1.txt@127.0.0.1:5002] [test_target1/file1.txt@127.0.0.1:5003] [140050324588224] [PUSH] [SUCCESS] [12 bytes pushed]
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file2.txt] PULL response: filesize=12
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file2.txt] Sent PUSH init: PUSH test_target1/file2.txt -1 dummy
+
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file2.txt] Starting data transfer from PULL socket
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file2.txt] PULL chunk 1: 12 bytes (total: 12) data: "2o file test"
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file2.txt] PUSH chunk 1: sent 12/12 bytes data: "2o file test"
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file2.txt] PULL socket closed normally (EOF)
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file3.txt] PULL response: filesize=12
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file2.txt] Sent PUSH finalize: PUSH test_target1/file2.txt 0 end
+
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file2.txt] Transfer complete: 1 chunks, 12 total bytes
+[2025-07-13 04:44:19] [test_source1/file2.txt@127.0.0.1:5002] [test_target1/file2.txt@127.0.0.1:5003] [140050316134080] [PULL] [SUCCESS] [12 bytes pulled]
+[2025-07-13 04:44:19] [test_source1/file2.txt@127.0.0.1:5002] [test_target1/file2.txt@127.0.0.1:5003] [140050316134080] [PUSH] [SUCCESS] [12 bytes pushed]
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file3.txt] Sent PUSH init: PUSH test_target1/file3.txt -1 dummy
+
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file3.txt] Starting data transfer from PULL socket
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file3.txt] PULL chunk 1: 12 bytes (total: 12) data: "3o file test"
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file3.txt] PUSH chunk 1: sent 12/12 bytes data: "3o file test"
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file3.txt] PULL socket closed normally (EOF)
+[2025-07-13 04:44:19] [DEBUG] [test_target1/file3.txt] Sent PUSH finalize: PUSH test_target1/file3.txt 0 end
+
+[2025-07-13 04:44:19] [DEBUG] [test_source1/file3.txt] Transfer complete: 1 chunks, 12 total bytes
+[2025-07-13 04:44:19] [test_source1/file3.txt@127.0.0.1:5002] [test_target1/file3.txt@127.0.0.1:5003] [140050307679936] [PULL] [SUCCESS] [12 bytes pulled]
+[2025-07-13 04:44:19] [test_source1/file3.txt@127.0.0.1:5002] [test_target1/file3.txt@127.0.0.1:5003] [140050307679936] [PUSH] [SUCCESS] [12 bytes pushed]

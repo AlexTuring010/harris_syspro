@@ -1,8 +1,10 @@
-[2025-06-04 10:59:16] LIST connection failed to 127.0.0.1:5000 — Connection refused
-[2025-06-04 10:59:16] Manager ready to accept console connections.
-[2025-06-04 10:59:34] Received command: add input_dir@127.0.0.1:5002 output_dir@127.0.0.1:5003
-[2025-06-04 10:59:37] Received command: cancel input_dir
-[2025-06-04 10:59:37] synchronization stopped for input_dir
-[2025-06-04 10:59:40] Received command: shutdown
-[2025-06-04 10:59:40] shutting down manager...
-[2025-06-04 10:59:40] manager shutdown complete.
+[2025-07-13 05:10:21] Added file: test_source1/file1.txt@127.0.0.1:5002 -> test_target1/file1.txt@127.0.0.1:5003
+[2025-07-13 05:10:21] Added file: test_source1/file2.txt@127.0.0.1:5002 -> test_target1/file2.txt@127.0.0.1:5003
+[2025-07-13 05:10:21] Added file: test_source1/file3.txt@127.0.0.1:5002 -> test_target1/file3.txt@127.0.0.1:5003
+[2025-07-13 05:10:21] Manager ready to accept console connections.
+[2025-07-13 05:10:21] [test_source1/file1.txt@127.0.0.1:5002] [test_target1/file1.txt@127.0.0.1:5003] [140165524620992] [PULL] [SUCCESS] [12 bytes pulled]
+[2025-07-13 05:10:21] [test_source1/file2.txt@127.0.0.1:5002] [test_target1/file2.txt@127.0.0.1:5003] [140165516166848] [PULL] [SUCCESS] [12 bytes pulled]
+[2025-07-13 05:10:21] [test_source1/file1.txt@127.0.0.1:5002] [test_target1/file1.txt@127.0.0.1:5003] [140165524620992] [PUSH] [SUCCESS] [12 bytes pushed]
+[2025-07-13 05:10:21] [test_source1/file3.txt@127.0.0.1:5002] [test_target1/file3.txt@127.0.0.1:5003] [140165507712704] [PULL] [SUCCESS] [12 bytes pulled]
+[2025-07-13 05:10:21] [test_source1/file2.txt@127.0.0.1:5002] [test_target1/file2.txt@127.0.0.1:5003] [140165516166848] [PUSH] [SUCCESS] [12 bytes pushed]
+[2025-07-13 05:10:21] [test_source1/file3.txt@127.0.0.1:5002] [test_target1/file3.txt@127.0.0.1:5003] [140165507712704] [PUSH] [SUCCESS] [12 bytes pushed]

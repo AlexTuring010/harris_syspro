@@ -30,6 +30,9 @@ void log_event(const char *message)
     get_timestamp(timestamp, sizeof(timestamp));
     fprintf(log_file, "[%s] %s\n", timestamp, message);
     fflush(log_file);
+    // Also print to screen
+    printf("[%s] %s\n", timestamp, message);
+    fflush(stdout);
 }
 
 void sigchld_handler(int signo) {
@@ -99,11 +102,23 @@ void *worker_thread(void *arg)
         dprintf(source_sock, "%s", pull_cmd);
         //διαβαζουμε απαντηση
         char meta[64];
-        ssize_t meta_len = read(source_sock, meta, sizeof(meta) - 1);
-        if (meta_len <= 0)
-        {
-            close(source_sock);
-            continue;
+        ssize_t meta_len = 0;
+        
+        // Read metadata character by character until we hit a space
+        while (meta_len < sizeof(meta) - 1) {
+            char c;
+            ssize_t r = read(source_sock, &c, 1);
+            if (r <= 0) {
+                close(source_sock);
+                pthread_mutex_lock(&job_mutex);
+                active_workers--;
+                pthread_mutex_unlock(&job_mutex);
+                goto next_job;
+            }
+            meta[meta_len++] = c;
+            if (c == ' ') {
+                break;
+            }
         }
         meta[meta_len] = '\0';
 
@@ -126,7 +141,7 @@ void *worker_thread(void *arg)
             continue;
         }
 
-        //ανοιγουμε συνδεση με target
+        // First connection: Send PUSH -1 to initialize file
         int target_sock = socket(AF_INET, SOCK_STREAM, 0);
         struct sockaddr_in target_addr;
         memset(&target_addr, 0, sizeof(target_addr));
@@ -153,22 +168,55 @@ void *worker_thread(void *arg)
         char push_cmd[2048];
         safe_snprintf(push_cmd, sizeof(push_cmd), "PUSH %s/%s -1 dummy\n", job.target_dir, job.filename);
         dprintf(target_sock, "%s", push_cmd);
+        
+        close(target_sock);  // Close after first command
 
         // διαβαζουμε το υπολοιπο του αρχειου και το στελνουμε σε chunks
         char buffer[BUFSIZE];
         ssize_t total = 0;
         ssize_t n;
+        
         while ((n = read(source_sock, buffer, BUFSIZE)) > 0)
         {
             total += n;
+            
+            // New connection for each chunk
+            target_sock = socket(AF_INET, SOCK_STREAM, 0);
+            if (connect(target_sock, (struct sockaddr *)&target_addr, sizeof(target_addr)) < 0)
+            {
+                char msg[256];
+                safe_snprintf(msg, sizeof(msg), "[%s/%s@%s:%d] [%s/%s@%s:%d] [%ld] [PUSH] [ERROR] [Failed to reconnect to target: %s]",
+                         job.source_dir, job.filename, job.source_host, job.source_port,
+                         job.target_dir, job.filename, job.target_host, job.target_port,
+                         pthread_self(), strerror(errno));
+                log_event(msg);
+                break;
+            }
+            
             char push_data[2048];
             safe_snprintf(push_data, sizeof(push_data), "PUSH %s/%s %ld ", job.target_dir, job.filename, n);
             dprintf(target_sock, "%s", push_data);
             write(target_sock, buffer, n);
+            
+            shutdown(target_sock, SHUT_WR);
+            close(target_sock);  // Close after each chunk
         }
 
-        safe_snprintf(push_cmd, sizeof(push_cmd), "PUSH %s/%s 0 end\n", job.target_dir, job.filename);
-        dprintf(target_sock, "%s", push_cmd);
+        // Final connection: Send PUSH 0 to finalize file
+        target_sock = socket(AF_INET, SOCK_STREAM, 0);
+        if (connect(target_sock, (struct sockaddr *)&target_addr, sizeof(target_addr)) < 0)
+        {
+            char msg[256];
+            safe_snprintf(msg, sizeof(msg), "[%s/%s@%s:%d] [%s/%s@%s:%d] [%ld] [PUSH] [ERROR] [Failed to connect for finalization: %s]",
+                     job.source_dir, job.filename, job.source_host, job.source_port,
+                     job.target_dir, job.filename, job.target_host, job.target_port,
+                     pthread_self(), strerror(errno));
+            log_event(msg);
+        } else {
+            safe_snprintf(push_cmd, sizeof(push_cmd), "PUSH %s/%s 0 end\n", job.target_dir, job.filename);
+            dprintf(target_sock, "%s", push_cmd);
+            close(target_sock);  // Close after final command
+        }
 
         //pull και push στο log
         char msg1[2048], msg2[2048];
@@ -185,11 +233,11 @@ void *worker_thread(void *arg)
         log_event(msg2);
 
         close(source_sock);
-        close(target_sock);
 
         pthread_mutex_lock(&job_mutex);
         active_workers--;
         pthread_mutex_unlock(&job_mutex);
+        next_job:;
     }
 
     return NULL;
@@ -237,11 +285,28 @@ void parse_config(const char *config_path)
 
             // παιρνουμε λιστα αρχειων
             char filename[MAX_LINE];
-            while (fgets(filename, sizeof(filename), fdopen(dup(list_sock), "r")))
-            {
-                if (strcmp(filename, ".\n") == 0)
-                    break;
-                filename[strcspn(filename, "\n")] = 0;
+            char buffer[4096];
+            int buf_pos = 0, buf_len = 0;
+            
+            while (1) {
+                // Read line from socket buffer
+                int line_pos = 0;
+                while (line_pos < MAX_LINE - 1) {
+                    if (buf_pos >= buf_len) {
+                        buf_len = read(list_sock, buffer, sizeof(buffer));
+                        if (buf_len <= 0) break;
+                        buf_pos = 0;
+                    }
+                    char c = buffer[buf_pos++];
+                    if (c == '\n') {
+                        filename[line_pos] = '\0';
+                        break;
+                    }
+                    filename[line_pos++] = c;
+                }
+                if (line_pos == 0) break;
+                
+                if (strcmp(filename, ".") == 0) break;
 
                 job_t job;
                 safe_snprintf(job.source_dir, sizeof(job.source_dir), "%s", src_dir);
@@ -269,12 +334,6 @@ void parse_config(const char *config_path)
                     safe_snprintf(msg, sizeof(msg), "Skipped inactive source: %s/%s", job.source_dir, job.filename);
                     log_event(msg); // optional
                 }
-
-                // Καταγραφη log
-                char log_msg[MAX_LINE * 2];
-                safe_snprintf(log_msg, sizeof(log_msg), "Added file: %s/%s@%s:%d -> %s/%s@%s:%d",
-                         src_dir, filename, src_host, src_port, tgt_dir, filename, tgt_host, tgt_port);
-                log_event(log_msg);
             }
             close(list_sock);
         }
@@ -328,6 +387,14 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    // Enable SO_REUSEADDR to allow port reuse immediately after close
+    int opt = 1;
+    if (setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        perror("setsockopt SO_REUSEADDR failed");
+        close(server_sock);
+        exit(EXIT_FAILURE);
+    }
+
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -336,6 +403,7 @@ int main(int argc, char *argv[])
     if (bind(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
     {
         perror("bind");
+        close(server_sock);
         exit(EXIT_FAILURE);
     }
 
